@@ -1,0 +1,24 @@
+#!/bin/sh
+PROJECTNAME='SYMFONYPROJECTNAME'
+color='\033[0;32m' #blue
+red='\033[0;31m'
+NC='\033[0m' # No Color
+echo -e "${color}Checking out commited changes${NC}"
+git --work-tree=/root/${PROJECTNAME} --git-dir=/root/${PROJECTNAME}/.git checkout -f
+echo -e "${color}Changing Directory owner and permissions${NC}"
+chown -R apache:apache /root/${PROJECTNAME}
+chown -R root:root /root/${PROJECTNAME}/.git
+chmod -R 755 /root/${PROJECTNAME}/.
+echo -e "${color}Remove Cache Directory${NC}"
+rm -rf /root/${PROJECTNAME}/app/cache/dev
+rm -rf /root/${PROJECTNAME}/app/cache/prod
+echo -e "${color}Composer Update / First time update will take a while${NC}"
+cd /root/${PROJECTNAME}
+composer update --prefer-dist --profile
+echo -e "${color}Clear Cache${NC}"
+php app/console assets:install --env=dev
+php app/console assetic:dump --env=dev
+echo -e "${color}Updating Schema${NC}"
+php app/console doctrine:schema:update --force
+echo -e "${red}Killing all php process / supervisord should auto restart symfony server${NC}"
+pkill php
