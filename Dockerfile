@@ -120,6 +120,9 @@ RUN sed -i "s/SYMFONYPROJECTNAME/$SYMFONYPROJECTNAME/g" /root/$SYMFONYPROJECTNAM
 # Change permission
 RUN chmod 755 /root/$SYMFONYPROJECTNAME/.git/hooks/post-receive
 
+# Change timezone to Taipei
+RUN echo y | cp -p /usr/share/zoneinfo/Asia/Taipei /etc/localtime
+
 # Display Private Key
 RUN cat /root/.ssh/docker-server.rsa
 
@@ -135,4 +138,3 @@ RUN echo "Once linked with DB container, must run /root/createUserDb.sh to initi
 
 # Exec supervisord
 CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
-
