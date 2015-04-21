@@ -15,6 +15,12 @@ rm -rf /root/${PROJECTNAME}/app/cache/prod
 echo -e "${color}Composer Update / First time update will take a while${NC}"
 cd /root/${PROJECTNAME}
 composer update --prefer-dist --profile
+GITSTAT=`git status |grep "nothing to commit"; echo $?`
+if [ "$GITSTAT" == 1 ]; then
+git add .
+git commit -am "Composer updated"
+echo -e "${red}Composer is updated. Besure to PULL updated changes${NC}"
+fi
 echo -e "${color}Clear Cache${NC}"
 php app/console assets:install --env=dev
 php app/console assetic:dump --env=dev
