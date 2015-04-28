@@ -3,7 +3,7 @@ PROJECTNAME='SYMFONYPROJECTNAME'
 color='\033[0;32m' #blue
 red='\033[0;31m'
 NC='\033[0m' # No Color
-GITVAR='--work-tree=/root/${PROJECTNAME} --git-dir=/root/${PROJECTNAME}/.git'
+GITVAR="--work-tree=/root/${PROJECTNAME} --git-dir=/root/${PROJECTNAME}/.git"
 echo -e "${color}Checking out commited changes${NC}"
 git $GITVAR checkout -f
 echo -e "${color}Changing Directory owner and permissions${NC}"
