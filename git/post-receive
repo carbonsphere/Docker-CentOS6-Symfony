@@ -3,8 +3,9 @@ PROJECTNAME='SYMFONYPROJECTNAME'
 color='\033[0;32m' #blue
 red='\033[0;31m'
 NC='\033[0m' # No Color
+GITVAR='--work-tree=/root/${PROJECTNAME} --git-dir=/root/${PROJECTNAME}/.git'
 echo -e "${color}Checking out commited changes${NC}"
-git --work-tree=/root/${PROJECTNAME} --git-dir=/root/${PROJECTNAME}/.git checkout -f
+git $GITVAR checkout -f
 echo -e "${color}Changing Directory owner and permissions${NC}"
 chown -R apache:apache /root/${PROJECTNAME}
 chown -R root:root /root/${PROJECTNAME}/.git
@@ -15,10 +16,10 @@ rm -rf /root/${PROJECTNAME}/app/cache/prod
 echo -e "${color}Composer Update / First time update will take a while${NC}"
 cd /root/${PROJECTNAME}
 composer update --prefer-dist --profile
-GITSTAT=`git status |grep "nothing to commit"; echo $?`
+GITSTAT=`git $GITVAR status |grep "nothing to commit"; echo $?`
 if [ "$GITSTAT" == 1 ]; then
-git add .
-git commit -am "Composer updated"
+git $GITVAR add .
+git $GITVAR commit -am "Composer updated"
 echo -e "${red}Composer is updated. Besure to PULL updated changes${NC}"
 fi
 echo -e "${color}Clear Cache${NC}"
